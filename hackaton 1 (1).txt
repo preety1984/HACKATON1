@@ -1,0 +1,631 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Password for user postgres:
+
+psql (16.3)
+WARNING: Console code page (437) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+postgres=# \l
+                                                     List of databases
+      Name      |  Owner   | Encoding | Locale Provider | Collate | Ctype | ICU Locale | ICU Rules |   Access privileges
+----------------+----------+----------+-----------------+---------+-------+------------+-----------+-----------------------
+ Hackaton1      | postgres | UTF8     | libc            | C       | C     |            |           |
+ MEDICAL SCHEME | postgres | UTF8     | libc            | C       | C     |            |           |
+ Medical_Scheme | postgres | UTF8     | libc            | C       | C     |            |           |
+ postgres       | postgres | UTF8     | libc            | C       | C     |            |           |
+ template0      | postgres | UTF8     | libc            | C       | C     |            |           | =c/postgres  +
+                |          |          |                 |         |       |            |           | postgres=CTc/postgres
+ template1      | postgres | UTF8     | libc            | C       | C     |            |           | =c/postgres  +
+                |          |          |                 |         |       |            |           | postgres=CTc/postgres
+(6 rows)
+
+
+postgres=# \c Hackaton1
+You are now connected to database "Hackaton1" as user "postgres".
+Hackaton1=# \dt
+               List of relations
+ Schema |       Name        | Type  |  Owner
+--------+-------------------+-------+----------
+ public | claims            | table | postgres
+ public | coveragetypes     | table | postgres
+ public | insurancepolicies | table | postgres
+ public | patients          | table | postgres
+ public | payments          | table | postgres
+ public | providers         | table | postgres
+(6 rows)
+
+
+Hackaton1=# SELECT * COVERAGETYPES;
+ERROR:  syntax error at or near "COVERAGETYPES"
+LINE 1: SELECT * COVERAGETYPES;
+                 ^
+Hackaton1=# SELECT * FROM COVERAGETYPES
+Hackaton1-# SELECT * FROM COVERAGETYPES;
+ERROR:  syntax error at or near "SELECT"
+LINE 2: SELECT * FROM COVERAGETYPES;
+        ^
+Hackaton1=# SELECT * FROM PROVIDERS;
+ providerid |            providername            | providertype |              address              | phonenumber |         email              |     specialization
+------------+------------------------------------+--------------+-----------------------------------+-------------+---------------------------------+-------------------------
+         21 | Springfield General Hospital       | Hospital     | 123 Health St, Springfield        | 555-0001    | info@springfieldhospital.com    | General Medicine
+         22 | Springfield General Hospital       | Hospital     | 123 Health St, Springfield        | 555-0001    | info@springfieldhospital.com    | General Medicine
+         23 | Springfield Dental Clinic          | Clinic       | 456 Smile Ave, Springfield        | 555-0002    | contact@springfielddental.com   | Dentistry
+         24 | Springfield Eye Care               | Clinic       | 789 Vision Rd, Springfield        | 555-0003    | info@springfieldeye.com         | Optometry
+         25 | Dr. Alice Johnson                  | Doctor       | 101 Wellness Blvd, Springfield    | 555-0004    | alice.johnson@medmail.com       | Pediatrics
+         26 | Dr. Robert Smith                   | Doctor       | 202 Care Lane, Springfield        | 555-0005    | robert.smith@medmail.com        | Cardiology
+         27 | Springfield Maternity Center       | Clinic       | 303 Baby St, Springfield          | 555-0006    | maternity@springfieldcenter.com | Maternity Care
+         28 | Springfield Physical Therapy       | Clinic       | 404 Rehab Rd, Springfield         | 555-0007    | physicaltherapy@springfield.com | Physical Therapy
+         29 | Dr. Emma Wilson                    | Doctor       | 505 Health St, Springfield        | 555-0008    | emma.wilson@medmail.com         | Orthopedics
+         30 | Springfield Mental Health Services | Clinic       | 606 Mind Ave, Springfield         | 555-0009    | mentalhealth@springfield.com    | Mental Health
+         31 | Dr. Mark Lee                       | Doctor       | 808 Wellness Blvd, Springfield    | 555-0011    | mark.lee@medmail.com            | Oncology
+         32 | Springfield Rehab Center           | Clinic       | 909 Rehab Rd, Springfield         | 555-0012    | rehab@springfield.com           | Rehabilitation Services
+         33 | Springfield Family Medicine        | Clinic       | 1010 Family St, Springfield       | 555-0013    | family@springfieldclinic.com    | Family Medicine
+         34 | Dr. Sophia Martinez                | Doctor       | 1111 Doctor St, Springfield       | 555-0014    | sophia.martinez@medmail.com     | Gynecology
+         35 | Springfield Alternative Therapy    | Clinic       | 1212 Alternative Way, Springfield | 555-0015    | alternative@springfield.com     | Alternative Medicine
+(15 rows)
+
+
+Hackaton1=#
+Hackaton1=#
+Hackaton1=# INSERT INTO PATIENTS (patientid, firstname, lastname, dateofbirth, gender, address, phonenumber, email, insurancepolicyid)
+Hackaton1-# VALUES
+Hackaton1-# ('001', 'John', 'Smith', '1985-06-15', 'M', '123 Elm St, Springfield', '555-123-4567', 'john.smith@email.com', 'POL12345'),
+Hackaton1-# ('002', 'Emily', 'Johnson', '1990-09-22', 'F', '456 Oak St, Rivertown', '555-234-5678', 'emily.johnson@email.com', 'POL12346'),
+Hackaton1-# ('003', 'Michael', 'Brown', '1978-12-02', 'M', '789 Pine St, Oldtown', '555-345-6789', 'michael.brown@email.com', 'POL12347'),
+Hackaton1-# ('004', 'Sarah', 'Davis', '1983-03-10', 'F', '101 Maple Ave, New City', '555-456-7890', 'sarah.davis@email.com', 'POL12348'),
+Hackaton1-# ('005', 'James', 'Wilson', '1995-05-20', 'M', '202 Birch Rd, Lakeview', '555-567-8901', 'james.wilson@email.com', 'POL12349');
+ERROR:  invalid input syntax for type integer: "POL12345"
+LINE 3: ...ngfield', '555-123-4567', 'john.smith@email.com', 'POL12345'...
+                                                             ^
+Hackaton1=#
+Hackaton1=# INSERT INTO PATIENTS (patientid, firstname, lastname, dateofbirth, gender, address, phonenumber, email, insurancepolicyid)
+Hackaton1-# VALUES
+Hackaton1-# (1, 'John', 'Smith', '1985-06-15', 'M', '123 Elm St, Springfield', '555-123-4567', 'john.smith@email.com', 1001),
+Hackaton1-# (2, 'Emily', 'Johnson', '1990-09-22', 'F', '456 Oak St, Rivertown', '555-234-5678', 'emily.johnson@email.com', 1002),
+Hackaton1-# (3, 'Michael', 'Brown', '1978-12-02', 'M', '789 Pine St, Oldtown', '555-345-6789', 'michael.brown@email.com', 1003),
+Hackaton1-# (4, 'Sarah', 'Davis', '1983-03-10', 'F', '101 Maple Ave, New City', '555-456-7890', 'sarah.davis@email.com', 1004),
+Hackaton1-# (5, 'James', 'Wilson', '1995-05-20', 'M', '202 Birch Rd, Lakeview', '555-567-8901', 'james.wilson@email.com', 1005);
+ERROR:  insert or update on table "patients" violates foreign key constraint "patients_insurancepolicyid_fkey"
+DETAIL:  Key (insurancepolicyid)=(1001) is not present in table "insurancepolicies".
+Hackaton1=#
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (1001, 'PN0001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 'CT001', 'PR001'),
+Hackaton1-# (1002, 'PN0002', '2024-02-01', '2025-02-01', 60000, 1300, 'Active', 'CT002', 'PR002'),
+Hackaton1-# (1003, 'PN0003', '2024-03-01', '2025-03-01', 70000, 1400, 'Active', 'CT003', 'PR003'),
+Hackaton1-# (1004, 'PN0004', '2024-04-01', '2025-04-01', 80000, 1500, 'Active', 'CT004', 'PR004'),
+Hackaton1-# (1005, 'PN0005', '2024-05-01', '2025-05-01', 90000, 1600, 'Inactive', 'CT005', 'PR005');
+ERROR:  invalid input syntax for type integer: "CT001"
+LINE 3: ...2024-01-01', '2025-01-01', 50000, 1200, 'Active', 'CT001', '...
+                                                             ^
+Hackaton1=#
+Hackaton1=#
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (1001, 'PN0001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 'CT001', 'PR001');
+ERROR:  invalid input syntax for type integer: "CT001"
+LINE 3: ...2024-01-01', '2025-01-01', 50000, 1200, 'Active', 'CT001', '...
+                                                             ^
+Hackaton1=# SELECT * FROM COVERAGETYPES;
+ coveragetypeid |     coveragename     |                                    description
+
+----------------+----------------------+------------------------------------------------------------------------------------
+              1 | General Health       | Coverage for general medical expenses including doctor visits and hospitalization.
+              2 | Dental               | Coverage for dental check-ups, cleanings, and treatments.
+              3 | Vision               | Coverage for eye exams, glasses, and contact lenses.
+              4 | Pharmacy             | Coverage for prescription medications and some over-the-counter drugs.
+              5 | Emergency Care       | Coverage for emergency medical treatments and services.
+              6 | Maternity            | Coverage for maternity-related expenses including prenatal and postnatal care.
+              7 | Mental Health        | Coverage for mental health services including therapy and counseling.
+              8 | Chronic Disease      | Coverage for ongoing treatment and management of chronic diseases.
+              9 | Preventive Care      | Coverage for preventive services including vaccinations and screenings.
+             10 | Rehabilitation       | Coverage for physical therapy and rehabilitation services.
+             11 | Specialist Care      | Coverage for specialist consultations and treatments.
+             12 | Surgical Procedures  | Coverage for surgical operations and associated hospital stays.
+             13 | Pediatric Care       | Coverage for medical care and treatments specific to children.
+             14 | Alternative Medicine | Coverage for alternative therapies such as acupuncture and chiropractic care.
+             15 | Home Healthcare      | Coverage for medical care provided at home including nursing and physical therapy.
+(15 rows)
+
+
+Hackaton1=# DELETE FROM coveragetypes;
+DELETE 15
+Hackaton1=# DELETE FROM PROVIDERS;
+DELETE 15
+Hackaton1=# SELECT * FROM PROVIDERS;
+ providerid | providername | providertype | address | phonenumber | email | specialization
+------------+--------------+--------------+---------+-------------+-------+----------------
+(0 rows)
+
+
+Hackaton1=# SELECT
+Hackaton1-#
+Hackaton1-#
+Hackaton1-#
+Hackaton1-# SELECT * FROM COVERAGETYPES;
+ERROR:  syntax error at or near "SELECT"
+LINE 2: SELECT * FROM COVERAGETYPES;
+        ^
+Hackaton1=# SELECT * FROM COVERAGETYPES;
+ coveragetypeid | coveragename | description
+----------------+--------------+-------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM PAYMENTS;
+ paymentid | claimid | paymentdate | paymentamount | paymentmethod
+-----------+---------+-------------+---------------+---------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM CLIAMS;
+ERROR:  relation "cliams" does not exist
+LINE 1: SELECT * FROM CLIAMS;
+                      ^
+Hackaton1=# SELECT * FROM CLAIMS;
+ claimid | insurancepolicyid | patientid | claimamount | claimstatus | claimdate | description
+---------+-------------------+-----------+-------------+-------------+-----------+-------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM INSURANCEPOLICIES;
+ insurancepolicyid | policynumber | policystartdate | policyenddate | coverageamount | premiumamount | policystatus | coveragetypeid | providerid
+-------------------+--------------+-----------------+---------------+----------------+---------------+--------------+----------------+------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM PATIENTS;
+ patientid | firstname | lastname | dateofbirth | gender | address | phonenumber | email | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------+-------------+-------+-------------------
+(0 rows)
+
+
+Hackaton1=# INSERT INTO COVERAGETYPES (coveragetypeid, coveragename, description)
+Hackaton1-# VALUES
+Hackaton1-# ('CT001', 'Basic Health', 'Basic health coverage with essential benefits.'),
+Hackaton1-# ('CT002', 'Extended Health', 'Extended health coverage including additional services.'),
+Hackaton1-# ('CT003', 'Family Plan', 'Comprehensive plan covering entire family.'),
+Hackaton1-# ('CT004', 'Dental Plan', 'Coverage specifically for dental care.'),
+Hackaton1-# ('CT005', 'Vision Plan', 'Coverage for eye care and vision correction.'),
+Hackaton1-# ('CT006', 'Critical Illness', 'Coverage for serious illnesses and critical conditions.');
+ERROR:  invalid input syntax for type integer: "CT001"
+LINE 3: ('CT001', 'Basic Health', 'Basic health coverage with essent...
+         ^
+Hackaton1=# INSERT INTO COVERAGETYPES (coveragetypeid, coveragename, description)
+Hackaton1-# VALUES
+Hackaton1-# ('CT001', 'Basic Health', 'Basic health coverage with essential benefits.');
+ERROR:  invalid input syntax for type integer: "CT001"
+LINE 3: ('CT001', 'Basic Health', 'Basic health coverage with essent...
+         ^
+Hackaton1=# INSERT INTO COVERAGETYPES (coveragetypeid, coveragename, description)
+Hackaton1-# VALUES
+Hackaton1-# ('CT001', 'Basic Health', 'Basic health coverage with essential benefits.'),
+Hackaton1-# ('CT002', 'Extended Health', 'Extended health coverage including additional services.'),
+Hackaton1-# ('CT003', 'Family Plan', 'Comprehensive plan covering entire family.'),
+Hackaton1-# ('CT004', 'Dental Plan', 'Coverage specifically for dental care.'),
+Hackaton1-# ('CT005', 'Vision Plan', 'Coverage for eye care and vision correction.'),
+Hackaton1-# ('CT006', 'Critical Illness', 'Coverage for serious illnesses and critical conditions.');
+ERROR:  invalid input syntax for type integer: "CT001"
+LINE 3: ('CT001', 'Basic Health', 'Basic health coverage with essent...
+         ^
+Hackaton1=# ALTER TABLE COVERAGETYPES
+Hackaton1-# ALTER COLUMN coveragetypeid TYPE VARCHAR(10);
+ERROR:  foreign key constraint "insurancepolicies_coveragetypeid_fkey" cannot be implemented
+DETAIL:  Key columns "coveragetypeid" and "coveragetypeid" are of incompatible types: integer and character varying.
+Hackaton1=#
+Hackaton1=#
+Hackaton1=#
+Hackaton1=# INSERT INTO COVERAGETYPES (coveragetypeid, coveragename, description)
+Hackaton1-# VALUES
+Hackaton1-# (1, 'Basic Health', 'Basic health coverage with essential benefits.'),
+Hackaton1-# (2, 'Extended Health', 'Extended health coverage including additional services.'),
+Hackaton1-# (3, 'Family Plan', 'Comprehensive plan covering entire family.'),
+Hackaton1-# (4, 'Dental Plan', 'Coverage specifically for dental care.'),
+Hackaton1-# (5, 'Vision Plan', 'Coverage for eye care and vision correction.'),
+Hackaton1-# (6, 'Critical Illness', 'Coverage for serious illnesses and critical conditions.');
+INSERT 0 6
+Hackaton1=#
+Hackaton1=#
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (2001, 'POL001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 1, 'PROV001'),
+Hackaton1-# (2002, 'POL002', '2024-02-01', '2025-02-01', 60000, 1300, 'Active', 2, 'PROV002'),
+Hackaton1-# (2003, 'POL003', '2024-03-01', '2025-03-01', 70000, 1400, 'Active', 3, 'PROV003'),
+Hackaton1-# (2004, 'POL004', '2024-04-01', '2025-04-01', 80000, 1500, 'Inactive', 4, 'PROV004'),
+Hackaton1-# (2005, 'POL005', '2024-05-01', '2025-05-01', 90000, 1600, 'Active', 5, 'PROV005'),
+Hackaton1-# (2006, 'POL006', '2024-06-01', '2025-06-01', 100000, 1700, 'Active', 6, 'PROV006');
+ERROR:  invalid input syntax for type integer: "PROV001"
+LINE 3: ...4-01-01', '2025-01-01', 50000, 1200, 'Active', 1, 'PROV001')...
+                                                             ^
+Hackaton1=#
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (2001, 'POL001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 1, 1),
+Hackaton1-# (2002, 'POL002', '2024-02-01', '2025-02-01', 60000, 1300, 'Active', 2, 2),
+Hackaton1-# (2003, 'POL003', '2024-03-01', '2025-03-01', 70000, 1400, 'Active', 3, 3),
+Hackaton1-# (2004, 'POL004', '2024-04-01', '2025-04-01', 80000, 1500, 'Inactive', 4, 4),
+Hackaton1-# (2005, 'POL005', '2024-05-01', '2025-05-01', 90000, 1600, 'Active', 5, 5),
+Hackaton1-# (2006, 'POL006', '2024-06-01', '2025-06-01', 100000, 1700, 'Active', 6, 6);
+ERROR:  new row for relation "insurancepolicies" violates check constraint "insurancepolicies_policystatus_check"
+DETAIL:  Failing row contains (2004, POL004, 2024-04-01, 2025-04-01, 80000.00, 1500.00, Inactive, 4, 4).
+Hackaton1=# \DT
+invalid command \DT
+Try \? for help.
+Hackaton1=# \dt
+               List of relations
+ Schema |       Name        | Type  |  Owner
+--------+-------------------+-------+----------
+ public | claims            | table | postgres
+ public | coveragetypes     | table | postgres
+ public | insurancepolicies | table | postgres
+ public | patients          | table | postgres
+ public | payments          | table | postgres
+ public | providers         | table | postgres
+(6 rows)
+
+
+Hackaton1=# select * from coveragetype;
+ERROR:  relation "coveragetype" does not exist
+LINE 1: select * from coveragetype;
+                      ^
+Hackaton1=# SELECT * FROM COVERAGETYPES;
+ coveragetypeid |   coveragename   |                       description
+----------------+------------------+---------------------------------------------------------
+              1 | Basic Health     | Basic health coverage with essential benefits.
+              2 | Extended Health  | Extended health coverage including additional services.
+              3 | Family Plan      | Comprehensive plan covering entire family.
+              4 | Dental Plan      | Coverage specifically for dental care.
+              5 | Vision Plan      | Coverage for eye care and vision correction.
+              6 | Critical Illness | Coverage for serious illnesses and critical conditions.
+(6 rows)
+
+
+Hackaton1=# SELECT * FROM PROVIDERS
+Hackaton1-# ;
+ providerid | providername | providertype | address | phonenumber | email | specialization
+------------+--------------+--------------+---------+-------------+-------+----------------
+(0 rows)
+
+
+Hackaton1=# INSERT INTO PROVIDERS (providerid, providername, providertype, address, phonenumber, email, specialization)
+Hackaton1-# VALUES
+Hackaton1-# ('PROV001', 'HealthFirst Clinic', 'Clinic', '123 Health St, Metropolis', '555-1010', 'contact@healthfirst.com', 'General Medicine'),
+Hackaton1-# ('PROV002', 'CarePlus Hospital', 'Hospital', '456 Wellness Ave, Gotham', '555-2020', 'info@careplus.com', 'Cardiology'),
+Hackaton1-# ('PROV003', 'Family Health Center', 'Clinic', '789 Family Rd, Star City', '555-3030', 'support@familyhealth.com', 'Pediatrics'),
+Hackaton1-# ('PROV004', 'Dental Experts', 'Clinic', '101 Dental St, Central City', '555-4040', 'appointments@dentalexperts.com', 'Dentistry'),
+Hackaton1-# ('PROV005', 'VisionCare Optics', 'Clinic', '202 Vision Blvd, Coast City', '555-5050', 'services@visioncare.com', 'Ophthalmology'),
+Hackaton1-# ('PROV006', 'Critical Care Medical Group', 'Hospital', '303 Critical Care Ln, Keystone', '555-6060', 'admin@criticalcare.com', 'Critical Care');
+ERROR:  invalid input syntax for type integer: "PROV001"
+LINE 3: ('PROV001', 'HealthFirst Clinic', 'Clinic', '123 Health St, ...
+         ^
+Hackaton1=# \d providers ;
+                                            Table "public.providers"
+     Column     |          Type          | Collation | Nullable |                    Default
+----------------+------------------------+-----------+----------+-----------------------------------------------
+ providerid     | integer                |           | not null | nextval('providers_providerid_seq'::regclass)
+ providername   | character varying(100) |           | not null |
+ providertype   | character varying(50)  |           |          |
+ address        | character varying(255) |           |          |
+ phonenumber    | character varying(15)  |           |          |
+ email          | character varying(100) |           |          |
+ specialization | character varying(50)  |           |          |
+Indexes:
+    "providers_pkey" PRIMARY KEY, btree (providerid)
+Check constraints:
+    "providers_providertype_check" CHECK (providertype::text = ANY (ARRAY['Hospital'::character varying, 'Clinic'::character varying, 'Doctor'::character varying]::text[]))
+Referenced by:
+    TABLE "insurancepolicies" CONSTRAINT "insurancepolicies_providerid_fkey" FOREIGN KEY (providerid) REFERENCES providers(providerid)
+
+
+\d: extra argument ";" ignored
+Hackaton1=# \d
+                           List of relations
+ Schema |                  Name                   |   Type   |  Owner
+--------+-----------------------------------------+----------+----------
+ public | claims                                  | table    | postgres
+ public | claims_claimid_seq                      | sequence | postgres
+ public | coveragetypes                           | table    | postgres
+ public | coveragetypes_coveragetypeid_seq        | sequence | postgres
+ public | insurancepolicies                       | table    | postgres
+ public | insurancepolicies_insurancepolicyid_seq | sequence | postgres
+ public | patients                                | table    | postgres
+ public | patients_patientid_seq                  | sequence | postgres
+ public | payments                                | table    | postgres
+ public | payments_paymentid_seq                  | sequence | postgres
+ public | providers                               | table    | postgres
+ public | providers_providerid_seq                | sequence | postgres
+(12 rows)
+
+
+Hackaton1=# ALTER TABLE PROVIDERS
+Hackaton1-# ALTER COLUMN PROVIDERID TYPE VARCHAR(25);
+ERROR:  foreign key constraint "insurancepolicies_providerid_fkey" cannot be implemented
+DETAIL:  Key columns "providerid" and "providerid" are of incompatible types: integer and character varying.
+Hackaton1=# \d patient
+Did not find any relation named "patient".
+Hackaton1=# \d patients
+                                             Table "public.patients"
+      Column       |          Type          | Collation | Nullable |                   Default
+-------------------+------------------------+-----------+----------+---------------------------------------------
+ patientid         | integer                |           | not null | nextval('patients_patientid_seq'::regclass)
+ firstname         | character varying(50)  |           | not null |
+ lastname          | character varying(50)  |           | not null |
+ dateofbirth       | date                   |           | not null |
+ gender            | character(1)           |           |          |
+ address           | character varying(255) |           |          |
+ phonenumber       | character varying(15)  |           |          |
+ email             | character varying(100) |           |          |
+ insurancepolicyid | integer                |           |          |
+Indexes:
+    "patients_pkey" PRIMARY KEY, btree (patientid)
+Check constraints:
+    "patients_gender_check" CHECK (gender = ANY (ARRAY['M'::bpchar, 'F'::bpchar, 'O'::bpchar]))
+Foreign-key constraints:
+    "patients_insurancepolicyid_fkey" FOREIGN KEY (insurancepolicyid) REFERENCES insurancepolicies(insurancepolicyid)
+Referenced by:
+    TABLE "claims" CONSTRAINT "claims_patientid_fkey" FOREIGN KEY (patientid) REFERENCES patients(patientid)
+
+
+Hackaton1=# \d insurancepolicies
+                                                Table "public.insurancepolicies"
+      Column       |         Type          | Collation | Nullable |
+                  Default
+-------------------+-----------------------+-----------+----------+--------------------------------------------------------------
+ insurancepolicyid | integer               |           | not null | nextval('insurancepolicies_insurancepolicyid_seq'::regclass)
+ policynumber      | character varying(50) |           | not null |
+ policystartdate   | date                  |           | not null |
+ policyenddate     | date                  |           | not null |
+ coverageamount    | numeric(15,2)         |           | not null |
+ premiumamount     | numeric(15,2)         |           | not null |
+ policystatus      | character varying(20) |           |          |
+ coveragetypeid    | integer               |           |          |
+ providerid        | integer               |           |          |
+Indexes:
+    "insurancepolicies_pkey" PRIMARY KEY, btree (insurancepolicyid)
+    "insurancepolicies_policynumber_key" UNIQUE CONSTRAINT, btree (policynumber)
+Check constraints:
+    "insurancepolicies_policystatus_check" CHECK (policystatus::text = ANY (ARRAY['Active'::character varying, 'Expired'::character varying, 'Cancelled'::character varying]::text[]))
+Foreign-key constraints:
+    "insurancepolicies_coveragetypeid_fkey" FOREIGN KEY (coveragetypeid) REFERENCES coveragetypes(coveragetypeid)
+    "insurancepolicies_providerid_fkey" FOREIGN KEY (providerid) REFERENCES providers(providerid)
+Referenced by:
+    TABLE "claims" CONSTRAINT "claims_insurancepolicyid_fkey" FOREIGN KEY (insurancepolicyid) REFERENCES insurancepolicies(insurancepolicyid)
+    TABLE "patients" CONSTRAINT "patients_insurancepolicyid_fkey" FOREIGN KEY (insurancepolicyid) REFERENCES insurancepolicies(insurancepolicyid)
+
+
+Hackaton1=# SELECT * FROM PATIENTS;
+ patientid | firstname | lastname | dateofbirth | gender | address | phonenumber | email | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------+-------------+-------+-------------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM INSURANCEPOLICIES;
+ insurancepolicyid | policynumber | policystartdate | policyenddate | coverageamount | premiumamount | policystatus | coveragetypeid | providerid
+-------------------+--------------+-----------------+---------------+----------------+---------------+--------------+----------------+------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM CLAIMS;
+ claimid | insurancepolicyid | patientid | claimamount | claimstatus | claimdate | description
+---------+-------------------+-----------+-------------+-------------+-----------+-------------
+(0 rows)
+
+
+Hackaton1=# SELECT * FROM PAYMENTS;
+ paymentid | claimid | paymentdate | paymentamount | paymentmethod
+-----------+---------+-------------+---------------+---------------
+(0 rows)
+
+
+Hackaton1=# SELECT * from COVERAGETYPES;
+ coveragetypeid |   coveragename   |                       description
+
+----------------+------------------+---------------------------------------------------------
+              1 | Basic Health     | Basic health coverage with essential benefits.
+              2 | Extended Health  | Extended health coverage including additional services.
+              3 | Family Plan      | Comprehensive plan covering entire family.
+              4 | Dental Plan      | Coverage specifically for dental care.
+              5 | Vision Plan      | Coverage for eye care and vision correction.
+              6 | Critical Illness | Coverage for serious illnesses and critical conditions.
+(6 rows)
+
+
+Hackaton1=# delete from coveragetypes;
+DELETE 6
+Hackaton1=# select * from providers
+Hackaton1-# ;
+ providerid | providername | providertype | address | phonenumber | email | specialization
+------------+--------------+--------------+---------+-------------+-------+----------------
+(0 rows)
+
+
+Hackaton1=#
+Hackaton1=#
+Hackaton1=#
+Hackaton1=#
+Hackaton1=#
+Hackaton1=# INSERT INTO COVERAGETYPES (coveragetypeid, coveragename, description)
+Hackaton1-# VALUES
+Hackaton1-# (1, 'Basic Health', 'Basic health coverage with essential benefits.'),
+Hackaton1-# (2, 'Extended Health', 'Extended health coverage including additional services.'),
+Hackaton1-# (3, 'Family Plan', 'Comprehensive plan covering entire family.'),
+Hackaton1-# (4, 'Dental Plan', 'Coverage specifically for dental care.'),
+Hackaton1-# (5, 'Vision Plan', 'Coverage for eye care and vision correction.'),
+Hackaton1-# (6, 'Critical Illness', 'Coverage for serious illnesses and critical conditions.');
+INSERT 0 6
+Hackaton1=# INSERT INTO PROVIDERS (providerid, providername, providertype, address, phonenumber, email, specialization)
+Hackaton1-# VALUES
+Hackaton1-# (1, 'HealthFirst Clinic', 'Clinic', '123 Health St, Metropolis', '555-1010', 'contact@healthfirst.com', 'General Medicine'),
+Hackaton1-# (2, 'CarePlus Hospital', 'Hospital', '456 Wellness Ave, Gotham', '555-2020', 'info@careplus.com', 'Cardiology'),
+Hackaton1-# (3, 'Family Health Center', 'Clinic', '789 Family Rd, Star City', '555-3030', 'support@familyhealth.com', 'Pediatrics'),
+Hackaton1-# (4, 'Dental Experts', 'Clinic', '101 Dental St, Central City', '555-4040', 'appointments@dentalexperts.com', 'Dentistry'),
+Hackaton1-# (5, 'VisionCare Optics', 'Clinic', '202 Vision Blvd, Coast City', '555-5050', 'services@visioncare.com', 'Ophthalmology'),
+Hackaton1-# (6, 'Critical Care Medical Group', 'Hospital', '303 Critical Care Ln, Keystone', '555-6060', 'admin@criticalcare.com', 'Critical Care');
+INSERT 0 6
+Hackaton1=#
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (1001, 'POL001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 1, 1),
+Hackaton1-# (1002, 'POL002', '2024-02-01', '2025-02-01', 60000, 1300, 'Active', 2, 2),
+Hackaton1-# (1003, 'POL003', '2024-03-01', '2025-03-01', 70000, 1400, 'Active', 3, 3),
+Hackaton1-# (1004, 'POL004', '2024-04-01', '2025-04-01', 80000, 1500, 'Inactive', 4, 4),
+Hackaton1-# (1005, 'POL005', '2024-05-01', '2025-05-01', 90000, 1600, 'Active', 5, 5),
+Hackaton1-# (1006, 'POL006', '2024-06-01', '2025-06-01', 100000, 1700, 'Active', 6, 6);
+ERROR:  new row for relation "insurancepolicies" violates check constraint "insurancepolicies_policystatus_check"
+DETAIL:  Failing row contains (1004, POL004, 2024-04-01, 2025-04-01, 80000.00, 1500.00, Inactive, 4, 4).
+Hackaton1=# delete from insurancepolicies
+Hackaton1-# where insurancepolicyid = '1004';
+DELETE 0
+Hackaton1=# select * from insurancepolicies;
+ insurancepolicyid | policynumber | policystartdate | policyenddate | coverageamount | premiumamount | policystatus | coveragetypeid | providerid
+-------------------+--------------+-----------------+---------------+----------------+---------------+--------------+----------------+------------
+(0 rows)
+
+
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (1001, 'POL001', '2024-01-01', '2025-01-01', 50000, 1200, 'Active', 1, 1),
+Hackaton1-# (1002, 'POL002', '2024-02-01', '2025-02-01', 60000, 1300, 'Active', 2, 2),
+Hackaton1-# (1003, 'POL003', '2024-03-01', '2025-03-01', 70000, 1400, 'Active', 3, 3);
+INSERT 0 3
+Hackaton1=# INSERT INTO INSURANCEPOLICIES (insurancepolicyid, policynumber, policystartdate, policyenddate, coverageamount, premiumamount, policystatus, coveragetypeid, providerid)
+Hackaton1-# VALUES
+Hackaton1-# (1005, 'POL005', '2024-05-01', '2025-05-01', 90000, 1600, 'Active', 5, 5),
+Hackaton1-# (1006, 'POL006', '2024-06-01', '2025-06-01', 100000, 1700, 'Active', 6, 6);
+INSERT 0 2
+Hackaton1=# INSERT INTO PATIENTS (patientid, firstname, lastname, dateofbirth, gender, address, phonenumber, email, insurancepolicyid)
+Hackaton1-# VALUES
+Hackaton1-# (1, 'John', 'Smith', '1980-05-15', 'M', '123 Maple St, Springfield', '555-123-4567', 'john.smith@email.com', 1001),
+Hackaton1-# (2, 'Jane', 'Doe', '1990-07-20', 'F', '456 Oak St, Springfield', '555-234-5678', 'jane.doe@email.com', 1002),
+Hackaton1-# (3, 'Alice', 'Johnson', '1985-11-25', 'F', '789 Pine St, Springfield', '555-345-6789', 'alice.johnson@email.com', 1003);
+INSERT 0 3
+Hackaton1=# INSERT INTO PATIENTS (patientid, firstname, lastname, dateofbirth, gender, address, phonenumber, email, insurancepolicyid)
+Hackaton1-# VALUES
+Hackaton1-# (5, 'Charlie', 'Brown', '2000-08-30', 'M', '202 Cedar St, Springfield', '555-567-8901', 'charlie.brown@email.com', 1005),
+Hackaton1-# (6, 'Emily', 'Davis', '1995-12-12', 'F', '303 Elm St, Springfield', '555-678-9012', 'emily.davis@email.com', 1006);
+INSERT 0 2
+Hackaton1=# INSERT INTO CLAIMS (claimid, insurancepolicyid, patientid, claimamount, claimstatus, claimdate, description)
+Hackaton1-# VALUES
+Hackaton1-# (1, 1001, 1, 1500, 'Approved', '2024-02-15', 'Routine check-up'),
+Hackaton1-# (2, 1002, 2, 2000, 'Pending', '2024-03-10', 'Emergency surgery'),
+Hackaton1-# (3, 1003, 3, 2500, 'Approved', '2024-04-20', 'Pediatric consultation');
+INSERT 0 3
+Hackaton1=# INSERT INTO CLAIMS (claimid, insurancepolicyid, patientid, claimamount, claimstatus, claimdate, description)
+Hackaton1-# VALUES
+Hackaton1-# (5, 1005, 5, 2200, 'Approved', '2024-06-30', 'Vision correction'),
+Hackaton1-# (6, 1006, 6, 3000, 'Pending', '2024-07-15', 'Critical illness treatment');
+INSERT 0 2
+Hackaton1=# INSERT INTO PAYMENTS (paymentid, claimid, paymentdate, paymentamount, paymentmethod)
+Hackaton1-# VALUES
+Hackaton1-# (1, 1, '2024-02-20', 1500, 'Credit Card'),
+Hackaton1-# (2, 2, '2024-03-15', 2000, 'Bank Transfer'),
+Hackaton1-# (3, 3, '2024-04-25', 2500, 'Credit Card');
+INSERT 0 3
+Hackaton1=# INSERT INTO PAYMENTS (paymentid, claimid, paymentdate, paymentamount, paymentmethod)
+Hackaton1-# VALUES
+Hackaton1-# (5, 5, '2024-07-05', 2200, 'Bank Transfer'),
+Hackaton1-# (6, 6, '2024-07-20', 3000, 'Credit Card');
+INSERT 0 2
+Hackaton1=# select * from payment
+Hackaton1-# where paymentamount= 2000;
+ERROR:  relation "payment" does not exist
+LINE 1: select * from payment
+                      ^
+Hackaton1=# select * from payments
+Hackaton1-# where paymentamount = 2000;
+ paymentid | claimid | paymentdate | paymentamount | paymentmethod
+-----------+---------+-------------+---------------+---------------
+         2 |       2 | 2024-03-15  |       2000.00 | Bank Transfer
+(1 row)
+
+
+Hackaton1=# select * from payments
+Hackaton1-# where paymentid = 1 or claimid = 3;
+ paymentid | claimid | paymentdate | paymentamount | paymentmethod
+-----------+---------+-------------+---------------+---------------
+         1 |       1 | 2024-02-20  |       1500.00 | Credit Card
+         3 |       3 | 2024-04-25  |       2500.00 | Credit Card
+(2 rows)
+
+
+Hackaton1=# select * from payments
+Hackaton1-#  where paymentid = 1 and claimid = 3;
+ paymentid | claimid | paymentdate | paymentamount | paymentmethod
+-----------+---------+-------------+---------------+---------------
+(0 rows)
+
+
+Hackaton1=# select * from patient
+Hackaton1-# ;
+ERROR:  relation "patient" does not exist
+LINE 1: select * from patient
+                      ^
+Hackaton1=# select * from patients
+Hackaton1-# where ;
+ERROR:  syntax error at or near ";"
+LINE 2: where ;
+              ^
+Hackaton1=# SELECT *
+Hackaton1-# FROM patients
+Hackaton1-# WHERE firstname LIKE 'J%';
+ patientid | firstname | lastname | dateofbirth | gender |          address          | phonenumber  |        email   | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------------------------+--------------+----------------------+-------------------
+         1 | John      | Smith    | 1980-05-15  | M      | 123 Maple St, Springfield | 555-123-4567 | john.smith@email.com |              1001
+         2 | Jane      | Doe      | 1990-07-20  | F      | 456 Oak St, Springfield   | 555-234-5678 | jane.doe@email.com   |              1002
+(2 rows)
+
+
+Hackaton1=# select * from patients
+Hackaton1-# order by gender ;
+ patientid | firstname | lastname | dateofbirth | gender |          address          | phonenumber  |          email      | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------------------------+--------------+-------------------------+-------------------
+         2 | Jane      | Doe      | 1990-07-20  | F      | 456 Oak St, Springfield   | 555-234-5678 | jane.doe@email.com      |              1002
+         3 | Alice     | Johnson  | 1985-11-25  | F      | 789 Pine St, Springfield  | 555-345-6789 | alice.johnson@email.com |              1003
+         6 | Emily     | Davis    | 1995-12-12  | F      | 303 Elm St, Springfield   | 555-678-9012 | emily.davis@email.com   |              1006
+         1 | John      | Smith    | 1980-05-15  | M      | 123 Maple St, Springfield | 555-123-4567 | john.smith@email.com    |              1001
+         5 | Charlie   | Brown    | 2000-08-30  | M      | 202 Cedar St, Springfield | 555-567-8901 | charlie.brown@email.com |              1005
+(5 rows)
+
+
+Hackaton1=# select * from patients
+Hackaton1-# order by dateofbirth asc;
+ patientid | firstname | lastname | dateofbirth | gender |          address          | phonenumber  |          email      | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------------------------+--------------+-------------------------+-------------------
+         1 | John      | Smith    | 1980-05-15  | M      | 123 Maple St, Springfield | 555-123-4567 | john.smith@email.com    |              1001
+         3 | Alice     | Johnson  | 1985-11-25  | F      | 789 Pine St, Springfield  | 555-345-6789 | alice.johnson@email.com |              1003
+         2 | Jane      | Doe      | 1990-07-20  | F      | 456 Oak St, Springfield   | 555-234-5678 | jane.doe@email.com      |              1002
+         6 | Emily     | Davis    | 1995-12-12  | F      | 303 Elm St, Springfield   | 555-678-9012 | emily.davis@email.com   |              1006
+         5 | Charlie   | Brown    | 2000-08-30  | M      | 202 Cedar St, Springfield | 555-567-8901 | charlie.brown@email.com |              1005
+(5 rows)
+
+
+Hackaton1=# SELECT p.patientid, p.firstname, p.lastname, ip.policynumber, ip.policystartdate, ip.policyenddate
+Hackaton1-# FROM patients p
+Hackaton1-# INNER JOIN insurancepolicies ip ON p.insurancepolicyid = ip.insurancepolicyid;
+ patientid | firstname | lastname | policynumber | policystartdate | policyenddate
+-----------+-----------+----------+--------------+-----------------+---------------
+         1 | John      | Smith    | POL001       | 2024-01-01      | 2025-01-01
+         2 | Jane      | Doe      | POL002       | 2024-02-01      | 2025-02-01
+         3 | Alice     | Johnson  | POL003       | 2024-03-01      | 2025-03-01
+         5 | Charlie   | Brown    | POL005       | 2024-05-01      | 2025-05-01
+         6 | Emily     | Davis    | POL006       | 2024-06-01      | 2025-06-01
+(5 rows)
+
+
+Hackaton1=# select * from patients;
+ patientid | firstname | lastname | dateofbirth | gender |          address          | phonenumber  |          email      | insurancepolicyid
+-----------+-----------+----------+-------------+--------+---------------------------+--------------+-------------------------+-------------------
+         1 | John      | Smith    | 1980-05-15  | M      | 123 Maple St, Springfield | 555-123-4567 | john.smith@email.com    |              1001
+         2 | Jane      | Doe      | 1990-07-20  | F      | 456 Oak St, Springfield   | 555-234-5678 | jane.doe@email.com      |              1002
+         3 | Alice     | Johnson  | 1985-11-25  | F      | 789 Pine St, Springfield  | 555-345-6789 | alice.johnson@email.com |              1003
+         5 | Charlie   | Brown    | 2000-08-30  | M      | 202 Cedar St, Springfield | 555-567-8901 | charlie.brown@email.com |              1005
+         6 | Emily     | Davis    | 1995-12-12  | F      | 303 Elm St, Springfield   | 555-678-9012 | emily.davis@email.com   |              1006
+(5 rows)
+
+
+Hackaton1=#
